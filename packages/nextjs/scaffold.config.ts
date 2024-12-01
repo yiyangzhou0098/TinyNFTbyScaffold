@@ -1,4 +1,5 @@
 import * as chains from "viem/chains";
+import { nft7500 } from "./utils/customChains";
 
 export type ScaffoldConfig = {
   targetNetworks: readonly chains.Chain[];
