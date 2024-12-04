@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import {ERC721URIStorage, ERC721} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyNFTCollection is ERC721URIStorage, Ownable {
+contract MyNFTCollection is ERC721, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId;
 
     /**
@@ -19,16 +20,38 @@ contract MyNFTCollection is ERC721URIStorage, Ownable {
         Ownable(initialOwner) // Pass the initial owner to the `Ownable` constructor
     {}
 
+    function _baseURI() internal pure override returns (string memory) {
+		return "https://ipfs.io/ipfs/";
+	}
+
     /**
      * @dev Mint a new NFT.
      * @param recipient The address of the recipient.
-     * @param tokenURI The metadata URI (e.g., IPFS URL).
+     * @param tURI The metadata URI (e.g., IPFS URL).
      */
-    function mintNFT(address recipient, string memory tokenURI) public onlyOwner returns (uint256) {
+    function mintNFT(address recipient, string memory tURI) public onlyOwner returns (uint256) {
         uint256 tokenId = _nextTokenId;
         _nextTokenId++;
         _mint(recipient, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, tURI);
         return tokenId;
     }
+
+    function tokenURI(
+		uint256 tokenId
+	) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+		return super.tokenURI(tokenId);
+	}
+
+    function supportsInterface(
+		bytes4 interfaceId
+	)
+		public
+		view
+		override(ERC721, ERC721URIStorage)
+		returns (bool)
+	{
+		return super.supportsInterface(interfaceId);
+	}
+
 }
