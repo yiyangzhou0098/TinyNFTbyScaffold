@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyNFTCollection is ERC721, ERC721URIStorage, Ownable {
-    uint256 private _nextTokenId;
+    uint256 public _nextTokenId;
 
     /**
      * @dev Constructor that initializes the contract with a `name` and `symbol` for the NFT collection

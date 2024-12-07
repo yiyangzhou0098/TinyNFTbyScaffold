@@ -42,5 +42,10 @@
   "packageManager": "yarn@3.2.3",
   "engines": {
     "node": ">=18.18.0"
+  },
+  "dependencies": {
+    "ethers": "^6.13.4",
+    "isomorphic-unfetch": "3.1.0",
+    "react-json-view": "^1.21.3"
   }
 }

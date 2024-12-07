@@ -1,12 +1,13 @@
 "use client";
 
-// import { MyHoldings } from "./_components";
+import { MyHoldings } from "./_components";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
+import { useAccount, useWalletClient } from "wagmi";
 import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo, useScaffoldContract, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import { useState } from "react";
+import MyNFTCollectionJson from "~~/contracts/MyNFTCollection.json";
 
 
 const MyCollections: NextPage = () => {
@@ -14,15 +15,23 @@ const MyCollections: NextPage = () => {
   const [collectionName, setCollectionName] = useState("");
   const [symbol, setSymbol] = useState("");
 
-
   const { writeContractAsync } = useScaffoldWriteContract("NFTCollectionsFactory");
 
+  const { data: factory } = useScaffoldContract({
+    contractName: "NFTCollectionsFactory",
+  });
+
+  // approve for auction
+  const { data: auctionContract} = useDeployedContractInfo("EnglishAuction");
+  const auctionContractAddress = auctionContract?.address;
+  const { data: walletClient } = useWalletClient();
 
   const handleCreateCollections = async () => {
 
     const notificationId = notification.loading("Creating");
     try {
       // First remove previous loading notification and then show success notification
+      if(walletClient === undefined || connectedAddress == undefined) return
       notification.remove(notificationId);
       notification.success("Collection "+ collectionName +" Created");
 
@@ -30,6 +39,20 @@ const MyCollections: NextPage = () => {
         functionName: "createYourCollection",
         args: [collectionName, symbol],
       });
+
+      if (factory === undefined) {
+        throw new Error("Collection address retrieve failed.");
+      }
+      const newCollection = await factory.read.getUserCollections([connectedAddress]);
+      
+      console.log("创建的coll"+ newCollection[newCollection.length-1].collectionAddress);
+
+      await walletClient.writeContract({
+        address: newCollection[newCollection.length-1].collectionAddress,
+        abi: MyNFTCollectionJson.abi,
+        functionName: 'setApprovalForAll',
+        args: [auctionContractAddress, true],
+      })
     } catch (error) {
       notification.remove(notificationId);
       console.error(error);
@@ -87,7 +110,7 @@ const MyCollections: NextPage = () => {
 
         )}
       </div>
-      {/* <MyHoldings /> */}
+      <MyHoldings/>
     </>
   );
 };

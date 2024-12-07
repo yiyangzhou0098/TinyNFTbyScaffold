@@ -8,7 +8,12 @@ contract NFTCollectionsFactory {
 
     struct CollectionInfo {
         address collectionAddress;
+        string name;
+        string symbol;
+        address owner;
     }
+
+    address public latestCollection;
 
     mapping(address => CollectionInfo[]) public userCollections;
     /**
@@ -19,9 +24,16 @@ contract NFTCollectionsFactory {
     function createYourCollection(string memory name, string memory symbol) public {
         MyNFTCollection collection = new MyNFTCollection(name, symbol, msg.sender);
 
-        userCollections[msg.sender].push(CollectionInfo({
-            collectionAddress: address(collection)
-        }));
+        CollectionInfo memory newCollection = CollectionInfo({
+            collectionAddress: address(collection),
+            name: name,
+            symbol: symbol,
+            owner: msg.sender
+        });
+        
+        userCollections[msg.sender].push(
+            newCollection
+        );
 
         emit CollectionCreated(msg.sender, address(collection), name, symbol);
     }
