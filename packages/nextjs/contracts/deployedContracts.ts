@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     NFTCollectionsFactory: {
-      address: "0x9cf0914441166914aadfda49ddef80fd630e2a72",
+      address: "0x452e2f2ef8ee4672244a458acba678f5e2e4a2b3",
       abi: [
         {
           type: "function",
@@ -155,7 +155,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     EnglishAuction: {
-      address: "0xe8563aef24e99a43458a4809fb23ad9f05084dbd",
+      address: "0x6814bf1500538a519229ba9ac193135920a28679",
       abi: [
         {
           type: "constructor",
