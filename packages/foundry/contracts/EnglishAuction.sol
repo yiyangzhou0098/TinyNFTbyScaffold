@@ -135,6 +135,10 @@ contract EnglishAuction is ReentrancyGuard {
             auction.bids[auction.highestBidder] += auction.highestBid;
         }
 
+        // Update auction state
+        auction.highestBid = msg.value;
+        auction.highestBidder = msg.sender;
+
          // Update activeAuctions entry
         for (uint256 i = 0; i < activeAuctions.length; i++) {
             if (activeAuctions[i].auctionId == auctionId) {

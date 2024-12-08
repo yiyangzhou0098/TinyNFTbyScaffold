@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Collectible } from "./MyHoldings";
 import { Address, AddressInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { parseEther } from "viem";
+
 
 export const NFTCard = ({ nft }: { nft: Collectible }) => {
   const [transferToAddress, setTransferToAddress] = useState("");
@@ -12,7 +14,7 @@ export const NFTCard = ({ nft }: { nft: Collectible }) => {
     try {
       writeContractAsync({
         functionName: "createNftAuction",
-        args: [nft.collectionAddress, BigInt(nft.id), BigInt(1), 60]
+        args: [nft.collectionAddress, BigInt(nft.id), BigInt(1), 3000]
       });
         }catch (err) {
         console.error("Error Createing Auction");

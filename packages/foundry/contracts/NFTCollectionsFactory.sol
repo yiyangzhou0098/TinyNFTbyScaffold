@@ -14,6 +14,8 @@ contract NFTCollectionsFactory {
     }
 
     address public latestCollection;
+    
+    CollectionInfo[] public rawAllCollections;
 
     mapping(address => CollectionInfo[]) public userCollections;
     /**
@@ -35,6 +37,10 @@ contract NFTCollectionsFactory {
             newCollection
         );
 
+        rawAllCollections.push(
+            newCollection
+        );
+
         emit CollectionCreated(msg.sender, address(collection), name, symbol);
     }
 
@@ -47,5 +53,7 @@ contract NFTCollectionsFactory {
         return userCollections[user];
     }
 
-
+    function getAllCollections() public view returns (CollectionInfo[] memory) {
+        return rawAllCollections;
+    }
 }

@@ -36,8 +36,8 @@ export const MyHoldings = () => {
   // first get all collection's address by allCollections
   const { data: allCollections } = useScaffoldReadContract({
     contractName: "NFTCollectionsFactory",
-    functionName: "getUserCollections",
-    args: [connectedAddress],
+    functionName: "getAllCollections",
+    // args: [connectedAddress],
     watch: true,
   });
 
@@ -54,8 +54,6 @@ export const MyHoldings = () => {
       const collectibleUpdate: Collectible[] = [];
       for(const collection of allCollections) {
         console.log(collection.collectionAddress)
-
-        if(collection.owner !== connectedAddress) continue
 
         const myNFTCollectionContract = getContract({
           address: collection.collectionAddress,
@@ -75,6 +73,9 @@ export const MyHoldings = () => {
               connectedAddress,
               BigInt(tokenIndex),
             ]);
+
+            const owner = await myNFTCollectionContract.read.ownerOf([tokenId]);
+            if (owner !== connectedAddress) continue;
 
             const tokenURI = String(await myNFTCollectionContract.read.tokenURI([tokenId]));
 

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     NFTCollectionsFactory: {
-      address: "0x452e2f2ef8ee4672244a458acba678f5e2e4a2b3",
+      address: "0x1f599f46c582728908f92472b4666d84c9569067",
       abi: [
         {
           type: "function",
@@ -26,6 +26,41 @@ const deployedContracts = {
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getAllCollections",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "tuple[]",
+              internalType: "struct NFTCollectionsFactory.CollectionInfo[]",
+              components: [
+                {
+                  name: "collectionAddress",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "name",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "symbol",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "owner",
+                  type: "address",
+                  internalType: "address",
+                },
+              ],
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -75,6 +110,40 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "rawAllCollections",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "collectionAddress",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "name",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "symbol",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "owner",
               type: "address",
               internalType: "address",
             },
@@ -155,7 +224,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     EnglishAuction: {
-      address: "0x6814bf1500538a519229ba9ac193135920a28679",
+      address: "0x1d28f9682c8e0c3c12e8b7e78159e77e855f9437",
       abi: [
         {
           type: "constructor",
