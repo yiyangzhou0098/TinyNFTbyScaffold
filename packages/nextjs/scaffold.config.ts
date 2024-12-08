@@ -7,6 +7,7 @@ export type ScaffoldConfig = {
   alchemyApiKey: string;
   walletConnectProjectId: string;
   onlyLocalBurnerWallet: boolean;
+  walletAutoConnect: boolean;
 };
 
 const scaffoldConfig = {
@@ -31,6 +32,7 @@ const scaffoldConfig = {
 
   // Only show the Burner Wallet when running on hardhat network
   onlyLocalBurnerWallet: false,
+  walletAutoConnect: false
 } as const satisfies ScaffoldConfig;
 
 export default scaffoldConfig;
