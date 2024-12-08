@@ -6,7 +6,7 @@ const externalContracts = {
     31337: {
         MyNFTCollection: {
             // for test
-            address: "0x99bbf6EEE18296DC032286a6F9C50a88d53BF8Ca", // Replace with the deployed contract address when known
+            address: "", // Replace with the deployed contract address when known
             abi: MyNFTCollectionJSON.abi, // Ensure this is the flat ABI array
         },
       },
