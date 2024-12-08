@@ -2,10 +2,10 @@
 pragma solidity ^0.8.19;
 
 import {ERC721URIStorage, ERC721} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract MyNFTCollection is ERC721, ERC721URIStorage, Ownable {
+contract MyNFTCollection is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     uint256 public _nextTokenId;
 
     /**
@@ -43,12 +43,33 @@ contract MyNFTCollection is ERC721, ERC721URIStorage, Ownable {
 		return super.tokenURI(tokenId);
 	}
 
+    /**
+     * @dev Override `_increaseBalance` to explicitly call ERC721's implementation.
+     */
+    function _increaseBalance(address account, uint128 amount) internal override(ERC721, ERC721Enumerable) {
+        unchecked {
+            super._increaseBalance(account, amount); // Call ERC721 implementation
+        }
+    }
+
+    /**
+     * @dev Override `_update` to resolve conflicts and delegate to `ERC721`.
+     */
+    function _update(address to, uint256 tokenId, address auth)
+        internal
+        virtual
+        override(ERC721, ERC721Enumerable)
+        returns (address)
+    {
+        return ERC721Enumerable._update(to, tokenId, auth); // Use ERC721Enumerable's implementation
+    }
+
     function supportsInterface(
 		bytes4 interfaceId
 	)
 		public
 		view
-		override(ERC721, ERC721URIStorage)
+		override(ERC721, ERC721URIStorage, ERC721Enumerable)
 		returns (bool)
 	{
 		return super.supportsInterface(interfaceId);

@@ -40,11 +40,6 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <PhotoIcon className="h-4 w-4" />,
   },
   {
-    label: "History",
-    href: "/transfers",
-    icon: <ArrowPathIcon className="h-4 w-4" />,
-  },
-  {
     label: "Auction",
     href: "/auction",
     icon: <CurrencyDollarIcon className="h-4 w-4" />,
@@ -59,7 +54,11 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/ipfsDownload",
     icon: <ArrowDownTrayIcon className="h-4 w-4" />,
   },
-
+  {
+    label: "History",
+    href: "/transfers",
+    icon: <ArrowPathIcon className="h-4 w-4" />,
+  },
   {
     label: "Debug Contracts",
     href: "/debug",

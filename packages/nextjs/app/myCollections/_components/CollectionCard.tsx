@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Collectible } from "./MyHoldings";
 import { Address, AddressInput, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
 

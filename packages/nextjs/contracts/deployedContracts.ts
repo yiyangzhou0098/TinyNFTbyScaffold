@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     NFTCollectionsFactory: {
-      address: "0x82c6d3ed4cd33d8ec1e51d0b5cc1d822eaa0c3dc",
+      address: "0xe1aa25618fa0c7a1cfdab5d6b456af611873b629",
       abi: [
         {
           type: "function",
@@ -155,12 +155,56 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     EnglishAuction: {
-      address: "0x05b4cb126885fb10464fdd12666feb25e2563b76",
+      address: "0xe1da8919f262ee86f9be05059c9280142cf23f48",
       abi: [
         {
           type: "constructor",
           inputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "activeAuctions",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "nft",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "nftId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "endAt",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "highestBid",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "seller",
+              type: "address",
+              internalType: "address payable",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -282,6 +326,51 @@ const deployedContracts = {
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getActiveAuctions",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "tuple[]",
+              internalType: "struct EnglishAuction.ActiveAuctionInfo[]",
+              components: [
+                {
+                  name: "auctionId",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "nft",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "nftId",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "endAt",
+                  type: "uint32",
+                  internalType: "uint32",
+                },
+                {
+                  name: "highestBid",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "seller",
+                  type: "address",
+                  internalType: "address payable",
+                },
+              ],
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",

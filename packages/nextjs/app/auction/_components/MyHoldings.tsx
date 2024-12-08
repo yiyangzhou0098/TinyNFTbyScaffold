@@ -15,6 +15,11 @@ export interface Collectible extends Partial<NFTMetaData> {
   uri: string;
   owner: string;
   collectionAddress: string;
+
+  highestBid: bigint;
+  endAt: number;
+  auctionId: bigint;
+  isOwner: boolean
 }
 
 export const MyHoldings = () => {
@@ -33,18 +38,16 @@ export const MyHoldings = () => {
     throw new Error('No valid client available');
   }
 
-  // first get all collection's address by allCollections
-  const { data: allCollections } = useScaffoldReadContract({
-    contractName: "NFTCollectionsFactory",
-    functionName: "getUserCollections",
-    args: [connectedAddress],
-    watch: true,
+  // first get all active Auctions
+  const { data: activeAuctions } = useScaffoldReadContract({
+    contractName: "EnglishAuction",
+    functionName: "getActiveAuctions",
   });
 
   // TODO only render once
   useEffect(() => {
     const updateMyCollectibles = async (): Promise<void> => {
-      if (connectedAddress === undefined || allCollections === undefined){
+      if (connectedAddress === undefined || activeAuctions === undefined){
         return;
       }
 
@@ -52,49 +55,46 @@ export const MyHoldings = () => {
       // setMyAllCollections([...allCollections]);
 
       const collectibleUpdate: Collectible[] = [];
-      for(const collection of allCollections) {
-        console.log(collection.collectionAddress)
-
-        if(collection.owner !== connectedAddress) continue
+      for(const auction of activeAuctions) {
+        console.log("auction's contract:" +auction.nft);
 
         const myNFTCollectionContract = getContract({
-          address: collection.collectionAddress,
+          address: auction.nft,
           abi: MyNFTCollectionJson.abi,
           client, // Use walletClient for writes, fallback to publicClient
         });
-        console.log("能获取到contract")
+        console.log("能获取到auction's contract")
 
-        const rawBalance = await myNFTCollectionContract.read.balanceOf([connectedAddress]);
-        if (rawBalance === undefined || rawBalance == null) return
-        const totalBalance = parseInt(rawBalance.toString());
-        console.log("能获取balance"+totalBalance);
+        try {
 
-        for(let tokenIndex = 0; tokenIndex < totalBalance; tokenIndex++) {
-          try {
-            const tokenId = await myNFTCollectionContract.read.tokenOfOwnerByIndex([
-              connectedAddress,
-              BigInt(tokenIndex),
-            ]);
+          const tokenURI = String(await myNFTCollectionContract.read.tokenURI([auction.nftId]));
+          console.log("能获取到tokenURI" + tokenURI)
 
-            const tokenURI = String(await myNFTCollectionContract.read.tokenURI([tokenId]));
+          const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
 
-            const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
-  
-            const nftMetadata: NFTMetaData = await getMetadataFromIPFS(ipfsHash);
-            collectibleUpdate.push({
-              id: Number(tokenId),
-              uri: tokenURI,
-              owner: connectedAddress,
-              collectionAddress: collection.collectionAddress,
-              ...nftMetadata,
-            });
+          const nftMetadata: NFTMetaData = await getMetadataFromIPFS(ipfsHash);
 
-          } catch (e) {
-            notification.error("Error fetching all collectibles");
-            setAllCollectiblesLoading(false);
-            console.log(e);
-          }
+          collectibleUpdate.push({
+            id: parseInt(auction.nftId.toString()),
+            uri: tokenURI,
+            owner: auction.seller,
+            collectionAddress: auction.nft,
+
+            auctionId: auction.auctionId,
+            highestBid: auction.highestBid,
+            endAt: auction.endAt,
+
+            isOwner: auction.seller === connectedAddress ? true : false,
+
+            ...nftMetadata,
+          });
+
+        } catch (e) {
+          notification.error("Error fetching all collectibles");
+          setAllCollectiblesLoading(false);
+          console.log(e);
         }
+        
       }
       collectibleUpdate.sort((a, b) => a.id - b.id);
       setMyAllCollectibles(collectibleUpdate);
@@ -103,7 +103,7 @@ export const MyHoldings = () => {
 
     updateMyCollectibles();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allCollections?.length]);
+  }, [activeAuctions]);
 
   if (allCollectiblesLoading)
     return (
@@ -116,7 +116,7 @@ export const MyHoldings = () => {
     <>
       {myAllCollectibles.length === 0 ? (
         <div className="flex justify-center items-center mt-10">
-          <div className="text-2xl text-primary-content">No NFTs found</div>
+          <div className="text-2xl text-primary-content">No Auction found</div>
         </div>
       ) : (
         <div className="flex flex-wrap gap-4 my-8 px-5 justify-center">

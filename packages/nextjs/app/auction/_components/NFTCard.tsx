@@ -1,23 +1,45 @@
 import { useState } from "react";
+import { parseEther } from "viem";
 import { Collectible } from "./MyHoldings";
 import { Address, AddressInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 export const NFTCard = ({ nft }: { nft: Collectible }) => {
   const [transferToAddress, setTransferToAddress] = useState("");
+  const [thisBidValue, setThisBidValue] = useState(nft.highestBid);
 
   const { writeContractAsync } = useScaffoldWriteContract("EnglishAuction");
 
-  const handleAuctionedOff = async () => { 
+  const bidIt = async () => { 
     try {
-      writeContractAsync({
-        functionName: "createNftAuction",
-        args: [nft.collectionAddress, BigInt(nft.id), BigInt(1), 60]
-      });
-        }catch (err) {
-        console.error("Error Createing Auction");
+      const newBid = BigInt(thisBidValue) + BigInt(1);
+      await writeContractAsync({
+        functionName: "bid",
+        args: [nft.auctionId],
+        value: newBid
+      })
+      setThisBidValue(newBid);
+        } catch (err) {
+        console.error("Error Bidding Auction");
       }
     }
+
+  const endAuction = async () => {
+    try {
+      await writeContractAsync({
+        functionName: "endAuction",
+        args: [nft.auctionId]
+      })
+    } catch (err) {
+      console.error("Error Ending Auction");
+    }
+  }
+
+  const EndAuctionBtn = () => (
+    <button onClick={endAuction} className="btn btn-secondary btn-md px-8 tracking-wide">
+      End Auction
+    </button>
+  );
 
   return (
     <div className="card card-compact bg-base-100 shadow-lg w-[300px] shadow-secondary">
@@ -74,10 +96,14 @@ export const NFTCard = ({ nft }: { nft: Collectible }) => {
           >
             Send
           </button>
-          <button className="btn btn-secondary btn-md px-8 tracking-wide" onClick={handleAuctionedOff}>
-              Auction it
+          <button className="btn btn-secondary btn-md px-8 tracking-wide" onClick={bidIt}>
+              Place Bid
             </button>
         </div>
+        <div className="card-actions justify-center">
+          <span className="text-lg font-semibold mb-2">Highest Bid: {Number(nft.highestBid)} </span>
+        </div>
+          {nft.isOwner && <EndAuctionBtn/>}
       </div>
     </div>
   );

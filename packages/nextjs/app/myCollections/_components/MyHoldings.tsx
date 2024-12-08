@@ -3,15 +3,8 @@
 import { useEffect, useState } from "react";
 import { CollectionCard } from "./CollectionCard";
 import { useAccount } from "wagmi";
-import { useScaffoldContract, useScaffoldReadContract, useScaffoldWriteContract, useWatchBalance } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
-import { getMetadataFromIPFS } from "~~/utils/simpleNFT/ipfs-fetch";
-import { NFTMetaData } from "~~/utils/simpleNFT/nftsMetadata";
+import { useScaffoldContract, useScaffoldReadContract} from "~~/hooks/scaffold-eth";
 
-import { useReadContract } from 'wagmi';
-import MyNFTCollectionABI from "~~/contracts/MyNFTCollection.json";
-
-import { getContract } from "viem";
 
 export type Collectible = {
   collectionAddress: string,
