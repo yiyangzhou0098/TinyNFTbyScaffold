@@ -6,40 +6,71 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    YourContract: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
+    NFTCollectionsFactory: {
+      address: "0x9cf0914441166914aadfda49ddef80fd630e2a72",
       abi: [
         {
-          type: "constructor",
+          type: "function",
+          name: "createYourCollection",
           inputs: [
             {
-              name: "_owner",
-              type: "address",
-              internalType: "address",
+              name: "name",
+              type: "string",
+              internalType: "string",
             },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "receive",
-          stateMutability: "payable",
-        },
-        {
-          type: "function",
-          name: "greeting",
-          inputs: [],
-          outputs: [
             {
-              name: "",
+              name: "symbol",
               type: "string",
               internalType: "string",
             },
           ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getUserCollections",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "tuple[]",
+              internalType: "struct NFTCollectionsFactory.CollectionInfo[]",
+              components: [
+                {
+                  name: "collectionAddress",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "name",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "symbol",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "owner",
+                  type: "address",
+                  internalType: "address",
+                },
+              ],
+            },
+          ],
           stateMutability: "view",
         },
         {
           type: "function",
-          name: "owner",
+          name: "latestCollection",
           inputs: [],
           outputs: [
             {
@@ -52,11 +83,190 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "premium",
+          name: "userCollections",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "collectionAddress",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "name",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "symbol",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "event",
+          name: "CollectionCreated",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "collectionAddress",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "name",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+            {
+              name: "symbol",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    EnglishAuction: {
+      address: "0xe8563aef24e99a43458a4809fb23ad9f05084dbd",
+      abi: [
+        {
+          type: "constructor",
+          inputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "activeAuctions",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "nft",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "nftId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "endAt",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "highestBid",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "seller",
+              type: "address",
+              internalType: "address payable",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "auctionCounter",
           inputs: [],
           outputs: [
             {
               name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "auctions",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "nft",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "nftId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "seller",
+              type: "address",
+              internalType: "address payable",
+            },
+            {
+              name: "highestBid",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "highestBidder",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "endAt",
+              type: "uint32",
+              internalType: "uint32",
+            },
+            {
+              name: "started",
+              type: "bool",
+              internalType: "bool",
+            },
+            {
+              name: "ended",
               type: "bool",
               internalType: "bool",
             },
@@ -65,12 +275,12 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setGreeting",
+          name: "bid",
           inputs: [
             {
-              name: "_newGreeting",
-              type: "string",
-              internalType: "string",
+              name: "auctionId",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [],
@@ -78,32 +288,86 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "totalCounter",
+          name: "createNftAuction",
+          inputs: [
+            {
+              name: "_nft",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "_nftId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "_startingBid",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "_duration",
+              type: "uint32",
+              internalType: "uint32",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "endAuction",
+          inputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getActiveAuctions",
           inputs: [],
           outputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "userGreetingCounter",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
+              type: "tuple[]",
+              internalType: "struct EnglishAuction.ActiveAuctionInfo[]",
+              components: [
+                {
+                  name: "auctionId",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "nft",
+                  type: "address",
+                  internalType: "address",
+                },
+                {
+                  name: "nftId",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "endAt",
+                  type: "uint32",
+                  internalType: "uint32",
+                },
+                {
+                  name: "highestBid",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "seller",
+                  type: "address",
+                  internalType: "address payable",
+                },
+              ],
             },
           ],
           stateMutability: "view",
@@ -111,40 +375,101 @@ const deployedContracts = {
         {
           type: "function",
           name: "withdraw",
-          inputs: [],
+          inputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           outputs: [],
           stateMutability: "nonpayable",
         },
         {
           type: "event",
-          name: "GreetingChange",
+          name: "AuctionCreated",
           inputs: [
             {
-              name: "greetingSetter",
+              name: "auctionId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "nft",
               type: "address",
               indexed: true,
               internalType: "address",
             },
             {
-              name: "newGreeting",
-              type: "string",
-              indexed: false,
-              internalType: "string",
+              name: "nftId",
+              type: "uint256",
+              indexed: true,
+              internalType: "uint256",
             },
             {
-              name: "premium",
-              type: "bool",
-              indexed: false,
-              internalType: "bool",
-            },
-            {
-              name: "value",
+              name: "startingBid",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
             },
           ],
           anonymous: false,
+        },
+        {
+          type: "event",
+          name: "AuctionEnded",
+          inputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "winner",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "BidPlaced",
+          inputs: [
+            {
+              name: "auctionId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "bidder",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "error",
+          name: "ReentrancyGuardReentrantCall",
+          inputs: [],
         },
       ],
       inheritedFunctions: {},

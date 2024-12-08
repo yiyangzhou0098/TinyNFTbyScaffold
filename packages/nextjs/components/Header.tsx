@@ -4,7 +4,17 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { 
+  ArrowDownTrayIcon,
+  ArrowPathIcon,
+  ArrowUpTrayIcon,
+  Bars3Icon,
+  BugAntIcon,
+  PhotoIcon,
+  CurrencyDollarIcon,
+  DocumentCurrencyBangladeshiIcon 
+  } 
+    from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -19,7 +29,36 @@ export const menuLinks: HeaderMenuLink[] = [
     label: "Home",
     href: "/",
   },
-
+  {
+    label: "My Collections",
+    href: "/myCollections",
+    icon: <DocumentCurrencyBangladeshiIcon className="h-4 w-4" />,
+  },
+  {
+    label: "My NFTs",
+    href: "/myNFTs",
+    icon: <PhotoIcon className="h-4 w-4" />,
+  },
+  {
+    label: "Auction",
+    href: "/auction",
+    icon: <CurrencyDollarIcon className="h-4 w-4" />,
+  },
+  {
+    label: "IPFS Upload",
+    href: "/ipfsUpload",
+    icon: <ArrowUpTrayIcon className="h-4 w-4" />,
+  },
+  {
+    label: "IPFS Download",
+    href: "/ipfsDownload",
+    icon: <ArrowDownTrayIcon className="h-4 w-4" />,
+  },
+  {
+    label: "History",
+    href: "/transfers",
+    icon: <ArrowPathIcon className="h-4 w-4" />,
+  },
   {
     label: "Debug Contracts",
     href: "/debug",
